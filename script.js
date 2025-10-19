@@ -9,18 +9,18 @@ items.addEventListener('mousedown', e => {
   items.classList.add('active');
 });
 
-items.addEventListener('mouseleave', () => {
+items.addEventListener('mouseup', () => {
   isDown = false;
   items.classList.remove('active');
 });
 
-items.addEventListener('mouseup', () => {
+items.addEventListener('mouseleave', () => {
   isDown = false;
   items.classList.remove('active');
 });
 
 items.addEventListener('mousemove', e => {
   if (!isDown) return;
-  const walk = (e.pageX - startX) * 1.5;
+  const walk = (e.pageX - startX) * 1.5; 
   items.scrollLeft = scrollLeft - walk;
 });
