@@ -1,24 +1,90 @@
 // Your code here.
- const container = document.querySelector('.items');
-let isDragging = false, startX = 0, startScroll = 0;
+ document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.container');
+            const cubes = document.querySelectorAll('.cube');
 
-container.addEventListener('mousedown', e => {
-  isDragging = true;
-  startX = e.pageX || e.clientX;
-  startScroll = container.scrollLeft;
-  container.classList.add('active');
-});
+            let activeCube = null;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+            let xOffset = 0;
+            let yOffset = 0;
 
-document.addEventListener('mousemove', e => {
-  if (!isDragging) return;
-  const currentX = e.pageX || e.clientX;
-  const distance = startX - currentX;
-  const newScroll = startScroll + distance;
-  const maxScroll = container.scrollWidth - container.clientWidth;
-  container.scrollLeft = Math.max(0, Math.min(newScroll, maxScroll));
-});
+            const containerRect = container.getBoundingClientRect();
+            const containerWidth = containerRect.width;
+            const containerHeight = containerRect.height;
 
-document.addEventListener('mouseup', () => {
-  isDragging = false;
-  container.classList.remove('active');
-});
+            function dragStart(e) {
+                activeCube = e.target.closest('.cube');
+                if (!activeCube) return;
+
+                activeCube.classList.add('dragging');
+                
+                const clientX = e.clientX || e.touches[0].clientX;
+                const clientY = e.clientY || e.touches[0].clientY;
+
+                initialX = clientX;
+                initialY = clientY;
+                xOffset = initialX - activeCube.getBoundingClientRect().left + containerRect.left;
+                yOffset = initialY - activeCube.getBoundingClientRect().top + containerRect.top;
+
+                document.addEventListener('mousemove', drag);
+                document.addEventListener('mouseup', dragEnd);
+                document.addEventListener('touchmove', drag);
+                document.addEventListener('touchend', dragEnd);
+            }
+
+            function drag(e) {
+                if (!activeCube) return;
+                
+                e.preventDefault();
+
+                const clientX = e.clientX || e.touches[0].clientX;
+                const clientY = e.clientY || e.touches[0].clientY;
+
+                currentX = clientX - xOffset;
+                currentY = clientY - yOffset;
+
+                setTranslate(currentX, currentY, activeCube);
+            }
+
+            function dragEnd(e) {
+                if (!activeCube) return;
+                
+                activeCube.classList.remove('dragging');
+                activeCube = null;
+                
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('mouseup', dragEnd);
+                document.removeEventListener('touchmove', drag);
+                document.removeEventListener('touchend', dragEnd);
+            }
+            
+            function setTranslate(xPos, yPos, el) {
+                const cubeWidth = el.offsetWidth;
+                const cubeHeight = el.offsetHeight;
+
+                let finalX = xPos;
+                if (finalX < 0) {
+                    finalX = 0; 
+                } else if (finalX + cubeWidth > containerWidth) {
+                    finalX = containerWidth - cubeWidth; 
+                }
+
+                let finalY = yPos;
+                if (finalY < 0) {
+                    finalY = 0; 
+                } else if (finalY + cubeHeight > containerHeight) {
+                    finalY = containerHeight - cubeHeight; 
+                }
+
+                el.style.left = finalX + 'px';
+                el.style.top = finalY + 'px';
+            }
+
+   cubes.forEach(cube => {
+                cube.addEventListener('mousedown', dragStart);
+                cube.addEventListener('touchstart', dragStart, { passive: false });
+            });
+        });
