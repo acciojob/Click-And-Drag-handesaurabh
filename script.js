@@ -1,12 +1,12 @@
 // Your code here.
 const items = document.querySelector('.items');
-let isDown = false, startX, scrollLeft;
+let isDown = false, startX = 0, scrollLeft = 0;
 
 items.addEventListener('mousedown', e => {
   isDown = true;
-  items.classList.add('active');
-  startX = e.pageX - items.offsetLeft;
+  startX = e.pageX;
   scrollLeft = items.scrollLeft;
+  items.classList.add('active');
 });
 
 items.addEventListener('mouseleave', () => {
@@ -21,8 +21,6 @@ items.addEventListener('mouseup', () => {
 
 items.addEventListener('mousemove', e => {
   if (!isDown) return;
-  e.preventDefault();
-  const x = e.pageX - items.offsetLeft;
-  const walk = (x - startX) * 2;
+  const walk = (e.pageX - startX) * 1.5;
   items.scrollLeft = scrollLeft - walk;
 });
