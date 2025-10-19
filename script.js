@@ -2,40 +2,31 @@
 const container = document.querySelector('.items');
 const items = document.querySelectorAll('.item');
 
-let draggedItem = null;
-let offsetX = 0;
-let startScrollLeft = 0;
 let isDragging = false;
+let startX = 0;
+let scrollLeft = 0;
 
 container.addEventListener('mousedown', (e) => {
-  draggedItem = e.target.closest('.item');
-  if (!draggedItem) return;
-  
   isDragging = true;
-  startScrollLeft = container.scrollLeft;
+  startX = e.pageX - container.offsetLeft;
+  scrollLeft = container.scrollLeft;
   container.classList.add('active');
-  
-  offsetX = e.pageX;
-  
-  e.preventDefault();
 });
 
 document.addEventListener('mousemove', (e) => {
-  if (!draggedItem || !isDragging) return;
+  if (!isDragging) return;
   
-  const diff = offsetX - e.pageX;
-  const newScrollLeft = startScrollLeft + diff;
+  e.preventDefault();
+  const x = e.pageX - container.offsetLeft;
+  const walk = (x - startX) * 2;
   
   const maxScroll = container.scrollWidth - container.clientWidth;
-  const constrainedScroll = Math.max(0, Math.min(newScrollLeft, maxScroll));
+  const newScroll = Math.max(0, Math.min(scrollLeft - walk, maxScroll));
   
-  container.scrollLeft = constrainedScroll;
-}, true);
+  container.scrollLeft = newScroll;
+});
 
 document.addEventListener('mouseup', () => {
-  if (draggedItem && isDragging) {
-    draggedItem = null;
-    isDragging = false;
-    container.classList.remove('active');
-  }
-}, true);
+  isDragging = false;
+  container.classList.remove('active');
+});
