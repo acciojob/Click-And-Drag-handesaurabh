@@ -19,27 +19,33 @@ body {
 }
 
 .items {
-  height: 500px;  /* Ensure visible height */
-  width: 100%;    /* or fixed width */
-  overflow-x: auto;  /* Enable horizontal scrolling */
-  overflow-y: hidden;
-  white-space: nowrap; /* Keep children in a row */
-  position: relative;
+  height: 500px;          /* Ensures .items is visible */
+  width: 80%;
   border: 2px solid white;
   background: rgba(255,255,255,0.1);
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: flex-start;
+  padding: 10px;
+  overflow: hidden;
 }
+
 .item {
-  display: inline-block;  /* so multiple cubes align horizontally */
   width: 100px;
   height: 100px;
   margin: 10px;
-  position: static; /* no absolute positioning for scroll */
-  cursor: grab;
-  user-select: none;
   background-color: dodgerblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: white;
   font-weight: bold;
+  cursor: grab;
+  user-select: none;
   border-radius: 8px;
+  position: absolute; /* Required for free dragging */
 }
 
 .item:nth-child(odd) {
