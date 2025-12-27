@@ -26,24 +26,28 @@ body {
   background: rgba(255,255,255,0.1);
   position: relative;
   margin: 0 auto;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  cursor: grab;
   box-sizing: border-box;
+  padding: 10px;
 }
 
 .item {
   width: 100px;
   height: 100px;
   background-color: dodgerblue;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   color: white;
   font-weight: bold;
-  cursor: grab;
+  cursor: pointer;
   user-select: none;
   border-radius: 8px;
-  position: absolute;
-  transition: transform 0.1s ease;
+  margin: 10px;
+  vertical-align: top;
 }
 
 div.item:nth-child(odd) {
@@ -58,9 +62,4 @@ div.item:nth-child(odd) {
   padding: 10px;
 }
 
-.item.dragging {
-  position: absolute;
-  z-index: 1000;
-  cursor: grabbing;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
+
