@@ -18,7 +18,7 @@ body {
   margin: 0;
 }
 
-.container {
+.items {
   height: 500px;
   width: 80%;
   max-width: 800px;
@@ -30,7 +30,7 @@ body {
   box-sizing: border-box;
 }
 
-.cube {
+.item {
   width: 100px;
   height: 100px;
   background-color: dodgerblue;
@@ -46,7 +46,7 @@ body {
   transition: transform 0.1s ease;
 }
 
-div.cube:nth-child(odd) {
+div.item:nth-child(odd) {
   background-color: tomato;
 }
 
@@ -58,7 +58,7 @@ div.cube:nth-child(odd) {
   padding: 10px;
 }
 
-.cube.dragging {
+.item.dragging {
   position: absolute;
   z-index: 1000;
   cursor: grabbing;
